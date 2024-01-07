@@ -72,6 +72,7 @@ module hockey(
 
 
 
+
     always @(posedge clk or posedge rst)
     begin
         
@@ -82,9 +83,9 @@ module hockey(
             Y_COORD <= 3'b000;
             score_A <= 2'b00;
             score_B <= 2'b00;
-            btn_A <= 1'b0;
-            btn_B <= 1'b0;
-            win <= 0;
+            //btn_A <= 1'b0;
+            //btn_B <= 1'b0;
+            //win <= 0;
             timer <= 0;
             correct_guess_B <= 0;
             correct_guess_A <= 0;
@@ -110,9 +111,11 @@ module hockey(
             if(BTNA == 1)begin
             Y_COORD <= YA;
             y1 <= DIRA;
-            btn_A <= 1;
+            //btn_A <= 1;
             X_COORD <= 0;
-            end;
+            end
+            
+            
 
         
             
@@ -124,7 +127,7 @@ module hockey(
             if(BTNB == 1) begin
             Y_COORD <= YB;
             y1 <= DIRB;
-            btn_B <= 1;
+            //btn_B <= 1;
             X_COORD <= 4;
             end
            
@@ -154,20 +157,20 @@ module hockey(
                 if(X_COORD < 3'b100)begin
                     X_COORD <= X_COORD + 1;
                     guess_y_B <= YB;
-                    if(BTNB == 1)begin
-                    btn_B <= 1;
+                    /*if(BTNB == 1)begin
+                    btn_B <= 1;*/
                 end
                 
             end
             if(X_COORD == 3'b100)begin
                 guess_y_B <= YB;
                 turn <= 1;
-                if(BTNB == 1)begin
+                /*if(BTNB == 1)begin
                     btn_B <= 1;
                 end
                 if(BTNB == 0)begin
                     btn_B <= 0;
-                end
+                end*/
                 
                 /*if((guess_y_B != Y_COORD) | (btn_B == 0))begin
                     score_A <= score_A + 1;
@@ -208,7 +211,6 @@ module hockey(
                 end
             end
 
-            end
 
         else if(cstate == s4)begin
             
@@ -233,23 +235,23 @@ module hockey(
                 if(X_COORD > 3'b000)begin
                     X_COORD <= (X_COORD - 1);
                     guess_y_A <= YA;
-                    if(BTNA == 1)begin
+                    /*if(BTNA == 1)begin
                         btn_A <= 1;
                     end
                     if(BTNA == 0)begin
                         btn_A <= 0;
-                    end
+                    end*/
                 end
 
                 if(X_COORD == 3'b000)begin
                     guess_y_A <= YA;
                     turn <= 0;
-                    if(BTNA == 1)begin
+                    /*if(BTNA == 1)begin
                         btn_A <= 1;
                     end
                     if(BTNA == 0)begin
                         btn_A <= 0;
-                    end
+                    end*/
                     
                     /*if((guess_y_A != Y_COORD) | (btn_A == 0))begin
                         score_B <= score_B + 1;
@@ -292,6 +294,17 @@ module hockey(
             end
         end
 
+        else if (cstate == s5) begin
+            if (timer < waittime) begin
+                timer <= timer + 1;
+
+            end
+            else begin
+                timer <= 0;
+            end
+
+        end
+
         else if( cstate == s6)begin
             timer <= timer + 1;
         end
@@ -308,8 +321,7 @@ module hockey(
                 end*/
 
                 guess_y_B <= YB;
-                $display("guess_y_B = %d", guess_y_B);
-                $display("Y_COORD = %d", Y_COORD);
+
                 if (BTNB == 1 && guess_y_B == Y_COORD)begin
                     
                     correct_guess_B <= 1;
@@ -327,8 +339,7 @@ module hockey(
             end
                 
         end
-            
-            
+
         else if( cstate == s9)begin
             timer <= timer + 1;
         end
@@ -364,38 +375,12 @@ module hockey(
                 
         
     end
-end
 
     
     
 
        
-    
-
-/*
-    always@(*)
-    begin
-
-        if(cstate == s0)begin
-            if(BTNA == 1 && BTNB == 0)begin
-                turn = 0;
-            end
-
-            else if(BTNB == 1 && BTNA == 0)begin
-                turn = 1;
-            end
-            else if(BTNB == 0 && BTNA == 0) begin
-                turn = 2;
-            end
-            else if(BTNB == 1 && BTNA == 1) begin
-                turn = 2;
-            end
-            else begin
-                turn = 2;
-            end
-        end
     end
-   */
 
 
 
@@ -407,35 +392,14 @@ end
 
             s0:
             begin
-                /*if(rst == 1)begin
-                    X_COORD = 3'b000;
-                    Y_COORD = 3'b000;
-                    score_A = 2'b00;
-                    score_B = 2'b00;
-                    btn_A = 1'b0;
-                    btn_B = 1'b0;
-                    turn  = 2;
-                    win = 0;
-                    timer = 0;
-                    correct_guess_B = 0;
-                    correct_guess_A = 0;
-                end
-                else begin
-                    ; //do nothing
-                end*/
-                
-                //x1 <= 1'b0;
-                //btn_A <= BTNA;
-                //btn_B <= BTNB;
+
 
                 if(turn == 0)begin
                     nstate = s6;
-                    //turn = 0;
                 end
 
                 else if(turn == 1)begin
                     nstate = s6;
-                    //turn = 1;
                 end
                 else if(turn == 2) begin
                     nstate = s0;
@@ -616,15 +580,12 @@ end
                 end
             end
 
-
-            
+            default: nstate = s0;
             
 
         endcase
     
     end
-
-
 
 
 

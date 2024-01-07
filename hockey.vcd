@@ -1,5 +1,5 @@
 $date
-	Sun Jan 07 15:21:29 2024
+	Sun Jan 07 17:56:44 2024
 $end
 $version
 	Icarus Verilog
@@ -42,21 +42,18 @@ $var parameter 8 : s8 $end
 $var parameter 8 ; s9 $end
 $var reg 3 < X_COORD [2:0] $end
 $var reg 3 = Y_COORD [2:0] $end
-$var reg 1 > btn_A $end
-$var reg 1 ? btn_B $end
-$var reg 2 @ correct_guess_A [1:0] $end
-$var reg 2 A correct_guess_B [1:0] $end
-$var reg 4 B cstate [3:0] $end
-$var reg 3 C guess_y_A [2:0] $end
-$var reg 3 D guess_y_B [2:0] $end
-$var reg 4 E nstate [3:0] $end
-$var reg 2 F score_A [1:0] $end
-$var reg 2 G score_B [1:0] $end
-$var reg 8 H timer [7:0] $end
-$var reg 2 I turn [1:0] $end
-$var reg 8 J waittime [7:0] $end
-$var reg 2 K win [1:0] $end
-$var reg 4 L y1 [3:0] $end
+$var reg 2 > correct_guess_A [1:0] $end
+$var reg 2 ? correct_guess_B [1:0] $end
+$var reg 4 @ cstate [3:0] $end
+$var reg 3 A guess_y_A [2:0] $end
+$var reg 3 B guess_y_B [2:0] $end
+$var reg 4 C nstate [3:0] $end
+$var reg 2 D score_A [1:0] $end
+$var reg 2 E score_B [1:0] $end
+$var reg 8 F timer [7:0] $end
+$var reg 2 G turn [1:0] $end
+$var reg 8 H waittime [7:0] $end
+$var reg 4 I y1 [3:0] $end
 $upscope $end
 $upscope $end
 $enddefinitions $end
@@ -78,21 +75,18 @@ b1010 #
 $end
 #0
 $dumpvars
-bx L
-bx K
-b10 J
 bx I
-bx H
+b10 H
 bx G
 bx F
 bx E
 bx D
-bx C
+b0 C
 bx B
 bx A
 bx @
-x?
-x>
+bx ?
+bx >
 bx =
 bx <
 b0 0
@@ -111,23 +105,19 @@ bx "
 bx !
 $end
 #5
+b0 @
 1+
 #10
-b0 E
-b10 I
-b0 @
-b0 A
-b0 H
-b0 K
-0?
-0>
-b0 G
+b10 G
+b0 >
+b0 ?
 b0 F
+b0 E
+b0 D
 b0 !
 b0 =
 b0 "
 b0 <
-b0 B
 0+
 1,
 #15
@@ -153,35 +143,37 @@ b0 B
 0+
 1%
 #65
-b110 E
-b0 I
+b110 C
+b0 G
 1+
 #70
 0+
 0%
 #75
-b110 B
+b110 @
 1+
 #80
 0+
 b10 )
 b10 /
+b1 '
+b1 -
 1%
 #85
-b1 H
+b1 F
 1+
 #90
 0+
 0%
 #95
-b1 E
-b10 H
+b1 C
+b10 F
 1+
 #100
 0+
 #105
-b11 H
-b1 B
+b11 F
+b1 @
 1+
 #110
 0+
@@ -189,7 +181,7 @@ b1 B
 b10 *
 b10 0
 #115
-b0 H
+b0 F
 1+
 #120
 0+
@@ -200,115 +192,116 @@ b0 H
 #135
 1+
 #140
-b11 E
+b11 C
 0+
+b0 '
+b0 -
 1%
 #145
-1>
-b0 L
+b0 I
 b10 !
 b10 =
-b11 B
+b11 @
 1+
 #150
 0+
 0%
 #155
-b1 H
+b1 F
 1+
 #160
 0+
 #165
-b10 H
+b10 F
 1+
 #170
 0+
 #175
-1?
-b10 D
+b10 B
 b1 "
 b1 <
-b0 H
+b0 F
 1+
 #180
 0+
 #185
-b1 H
+b1 F
 1+
 #190
 0+
 #195
-b10 H
+b10 F
 1+
 #200
 0+
 #205
 b10 "
 b10 <
-b0 H
+b0 F
 1+
 #210
 0+
 #215
-b1 H
+b1 F
 1+
 #220
 0+
 #225
-b10 H
+b10 F
 1+
 #230
 0+
 #235
 b11 "
 b11 <
-b0 H
+b0 F
 1+
 #240
 0+
 #245
-b1 H
+b1 F
 1+
 #250
 0+
 #255
-b10 H
+b10 F
 1+
 #260
 0+
 #265
-b111 E
+b111 C
 b100 "
 b100 <
-b0 H
+b0 F
 1+
 #270
 0+
 #275
-b1 H
-b111 B
+b1 G
+b1 F
+b111 @
 1+
 #280
 0+
 #285
-b100 E
-b10 H
+b100 C
+b10 F
 b11 "
 b11 <
-b1 A
+b1 ?
 1+
 #290
 0+
 0&
 #295
-b0 H
-b100 B
+b0 F
+b100 @
 1+
 #300
 0+
 #305
-b1 H
-b0 A
+b1 F
+b0 ?
 1+
 #310
 0+
@@ -316,93 +309,92 @@ b0 A
 b11 *
 b11 0
 #315
-b10 H
+b10 F
 1+
 #320
 0+
 0&
 #325
-0>
-b10 C
+b10 A
 b10 "
 b10 <
-b0 H
+b0 F
 1+
 #330
 0+
 #335
-b1 H
+b1 F
 1+
 #340
 0+
 #345
-b10 H
+b10 F
 1+
 #350
 0+
 #355
 b1 "
 b1 <
-b0 H
+b0 F
 1+
 #360
 0+
 #365
-b1 H
+b1 F
 1+
 #370
 0+
 #375
-b10 H
+b10 F
 1+
 #380
 0+
 #385
-b1000 E
+b1000 C
 b0 "
 b0 <
-b0 H
+b0 F
 1+
 #390
 0+
 #395
-b1 H
-b1000 B
+b1 F
+b1000 @
 1+
 #400
 0+
 #405
-b1010 E
-b10 H
+b1010 C
+b10 F
 1+
 #410
 0+
 #415
-b0 H
-b1 G
-b1010 B
+b0 F
+b1 E
+b1010 @
 1+
 #420
 0+
 #425
-b1 H
+b1 F
 1+
 #430
 0+
 #435
-b1 E
-b10 H
+b1 C
+b10 F
 1+
 #440
 0+
 #445
-b11 H
-b1 B
+b11 F
+b1 @
 1+
 #450
 0+
 #455
-b0 H
+b0 F
 1+
 #460
 0+

@@ -52,7 +52,7 @@ initial begin
 	BTNA = 0;
 	#FP; //80
 	BTNA = 1;
-	DIRA = 0;
+	DIRA = 1;
 	YA = 2;
 	#FP; //90
 	BTNA = 0;

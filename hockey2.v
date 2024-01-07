@@ -29,7 +29,7 @@ module hockey(
     reg [2:0] X_COORD;
 	reg [2:0] Y_COORD;
     reg [3:0] cstate; //current state
-    reg [3:0] nstate; //next state
+    reg [3:0] nstate = 8'b00000000; //next state
 
     parameter [7:0] s0 = 8'b00000000; //IDLE
     parameter [7:0] s1 = 8'b00000001; //BTNA == 1
@@ -45,12 +45,12 @@ module hockey(
 
    
     
-    parameter [6:0] DIGIT_0 = 7'b0000001; // Example pattern for digit 0
-    parameter [6:0] DIGIT_1 = 7'b1001111; // Example pattern for digit 1
-    parameter [6:0] DIGIT_2 = 7'b0010010; // Example pattern for digit 2
-    parameter [6:0] DIGIT_3 = 7'b0000110; // Example pattern for digit 3
-    parameter [6:0] DIGIT_4 = 7'b1001100; // Example pattern for digit 3
-    parameter [6:0] DIGIT_line = 7'b1111110; // Example pattern for digit 3
+    parameter [6:0] DIGIT_0 = 7'b0000001;
+    parameter [6:0] DIGIT_1 = 7'b1001111;
+    parameter [6:0] DIGIT_2 = 7'b0010010;
+    parameter [6:0] DIGIT_3 = 7'b0000110;
+    parameter [6:0] DIGIT_4 = 7'b1001100;
+    parameter [6:0] DIGIT_line = 7'b1111110;
     parameter [6:0] PRINT_A = 7'b0001000;
     parameter [6:0] PRINT_B = 7'b1100000;
 
@@ -65,11 +65,8 @@ module hockey(
 
 
     
-    //else yaz
     //ID: 29015 / 27968;
 
-    reg btn_A;
-    reg btn_B;
 
     reg x1;
     reg [3:0] y1;
@@ -79,7 +76,7 @@ module hockey(
     reg [1:0] turn = 2; // 0 = A , 1 = B, 2 = standby
     reg [1:0] score_A;
     reg [1:0] score_B;
-    reg [1:0] win;
+    //reg [1:0] win;
     reg [7:0] timer;
     reg [7:0] waittime = 8'd100;
 
@@ -101,9 +98,7 @@ module hockey(
             Y_COORD <= 3'b000;
             score_A <= 2'b00;
             score_B <= 2'b00;
-            btn_A <= 1'b0;
-            btn_B <= 1'b0;
-            win <= 0;
+
             timer <= 0;
             correct_guess_B <= 0;
             correct_guess_A <= 0;
@@ -129,9 +124,10 @@ module hockey(
             if(BTNA == 1)begin
             Y_COORD <= YA;
             y1 <= DIRA;
-            btn_A <= 1;
             X_COORD <= 0;
-            end;
+            end
+            
+            
 
         
             
@@ -143,7 +139,6 @@ module hockey(
             if(BTNB == 1) begin
             Y_COORD <= YB;
             y1 <= DIRB;
-            btn_B <= 1;
             X_COORD <= 4;
             end
            
@@ -152,14 +147,6 @@ module hockey(
         
         else if(cstate == s3)begin
             
-            //win state check code from here
-            /*if( score_B >= 3)begin
-                win <= win + 1;
-            end
-            if( score_A >= 3)begin
-                win <= win + 1;
-            end*/
-            //to here
 
             correct_guess_A <= 0;
 
@@ -173,27 +160,13 @@ module hockey(
                 if(X_COORD < 3'b100)begin
                     X_COORD <= X_COORD + 1;
                     guess_y_B <= YB;
-                    if(BTNB == 1)begin
-                    btn_B <= 1;
+
                 end
                 
             end
             if(X_COORD == 3'b100)begin
                 guess_y_B <= YB;
                 turn <= 1;
-                if(BTNB == 1)begin
-                    btn_B <= 1;
-                end
-                if(BTNB == 0)begin
-                    btn_B <= 0;
-                end
-                
-                /*if((guess_y_B != Y_COORD) | (btn_B == 0))begin
-                    score_A <= score_A + 1;
-                end
-                if((guess_y_B == Y_COORD) | (btn_B == 0))begin
-                    Y_COORD <= Y_COORD;
-                end*/
 
             end
 
@@ -206,7 +179,7 @@ module hockey(
                         end
                     else if(Y_COORD == 3'b100)begin
                         y1 <= 2'd2;
-                        Y_COORD <= 3'b100;
+                        Y_COORD <= 3'b011;
                         end
                 end
                 if (y1 == 2'd2)begin
@@ -219,7 +192,7 @@ module hockey(
                             end
                     else if (Y_COORD == 3'b000 )begin
                             y1 <= 2'd1;
-                            Y_COORD <= 3'b000;
+                            Y_COORD <= 3'b001;
                         end
                 end
                 if (y1 == 2'd0)begin
@@ -227,19 +200,9 @@ module hockey(
                 end
             end
 
-            end
 
         else if(cstate == s4)begin
             
-            //win state check code from here
-           /* if( score_B >= 3)begin
-                win <= win + 1;
-            end
-            if( score_A >= 3)begin
-                win <= win + 1;
-            end*/
-            //to here
-
             correct_guess_B <= 0;
 
 
@@ -252,30 +215,12 @@ module hockey(
                 if(X_COORD > 3'b000)begin
                     X_COORD <= (X_COORD - 1);
                     guess_y_A <= YA;
-                    if(BTNA == 1)begin
-                        btn_A <= 1;
-                    end
-                    if(BTNA == 0)begin
-                        btn_A <= 0;
-                    end
+
                 end
 
                 if(X_COORD == 3'b000)begin
                     guess_y_A <= YA;
                     turn <= 0;
-                    if(BTNA == 1)begin
-                        btn_A <= 1;
-                    end
-                    if(BTNA == 0)begin
-                        btn_A <= 0;
-                    end
-                    
-                    /*if((guess_y_A != Y_COORD) | (btn_A == 0))begin
-                        score_B <= score_B + 1;
-                    end
-                    if((guess_y_A == Y_COORD) | (btn_A == 0))begin
-                        Y_COORD <= Y_COORD;
-                    end*/
                 
                 end
             
@@ -288,7 +233,7 @@ module hockey(
                         end
                     else if(Y_COORD == 3'b100)begin
                         y1 <= 2'd2;
-                        Y_COORD <= 3'b100;
+                        Y_COORD <= 3'b011;
                         end
                 end
            
@@ -301,7 +246,7 @@ module hockey(
                         end
                 else if (Y_COORD == 3'b000 )begin
                         y1 <= 2'd1;
-                        Y_COORD <= 3'b000;
+                        Y_COORD <= 3'b001;
                     end
             end
             
@@ -309,6 +254,17 @@ module hockey(
                     Y_COORD <= Y_COORD;
                 end
             end
+        end
+
+        else if (cstate == s5) begin
+            if (timer < waittime) begin
+                timer <= timer + 1;
+
+            end
+            else begin
+                timer <= 0;
+            end
+
         end
 
         else if( cstate == s6)begin
@@ -322,13 +278,9 @@ module hockey(
             end
             if(timer < waittime )begin
         
-                /*if(BTNA == 1)begin
-                    guess_y_B <= YB;
-                end*/
 
                 guess_y_B <= YB;
-                $display("guess_y_B = %d", guess_y_B);
-                $display("Y_COORD = %d", Y_COORD);
+
                 if (BTNB == 1 && guess_y_B == Y_COORD)begin
                     
                     correct_guess_B <= 1;
@@ -389,31 +341,6 @@ module hockey(
        
     end
 
-/*
-    always@(*)
-    begin
-
-        if(cstate == s0)begin
-            if(BTNA == 1 && BTNB == 0)begin
-                turn = 0;
-            end
-
-            else if(BTNB == 1 && BTNA == 0)begin
-                turn = 1;
-            end
-            else if(BTNB == 0 && BTNA == 0) begin
-                turn = 2;
-            end
-            else if(BTNB == 1 && BTNA == 1) begin
-                turn = 2;
-            end
-            else begin
-                turn = 2;
-            end
-        end
-    end
-   */
-
 
 
 
@@ -424,35 +351,14 @@ module hockey(
 
             s0:
             begin
-                /*if(rst == 1)begin
-                    X_COORD = 3'b000;
-                    Y_COORD = 3'b000;
-                    score_A = 2'b00;
-                    score_B = 2'b00;
-                    btn_A = 1'b0;
-                    btn_B = 1'b0;
-                    turn  = 2;
-                    win = 0;
-                    timer = 0;
-                    correct_guess_B = 0;
-                    correct_guess_A = 0;
-                end
-                else begin
-                    ; //do nothing
-                end*/
-                
-                //x1 <= 1'b0;
-                //btn_A <= BTNA;
-                //btn_B <= BTNB;
+
 
                 if(turn == 0)begin
                     nstate = s6;
-                    //turn = 0;
                 end
 
                 else if(turn == 1)begin
                     nstate = s6;
-                    //turn = 1;
                 end
                 else if(turn == 2) begin
                     nstate = s0;
@@ -633,8 +539,7 @@ module hockey(
                 end
             end
 
-
-            
+            default: nstate = s0;
             
 
         endcase
@@ -642,40 +547,12 @@ module hockey(
     end
 
 
-
-
-
-
-
-/*
-        always@(*)
-        begin
-
-            if(cstate == s0)begin
-                if(BTNA == 1 && BTNB == 0)begin
-                    turn = 0;
-                end
-
-                else if(BTNB == 1 && BTNA == 0)begin
-                    turn = 1;
-                end
-                else if(BTNB == 0 && BTNA == 0) begin
-                    turn = 2;
-                end
-                else if(BTNB == 1 && BTNA == 1) begin
-                    turn = 2;
-                end
-                else begin
-                    turn = 2;
-                end
-            end
-        end
-       */
-
 //for LEDs
         always @ (*)
         begin
-            
+            LEDA = 0;
+            LEDB = 0;
+            LEDX = LD_NONE;
           case (cstate)
             s0:
             begin
@@ -761,14 +638,14 @@ module hockey(
             begin
               LEDA = 1;
               LEDB = 0;
-              LEDX = LD_1;
+              LEDX = LD_4;
             end
       
             s7:
             begin
               LEDA = 0;
               LEDB = 1;
-              LEDX = LD_4;
+              LEDX = LD_0;
             end
       
             s10:
@@ -787,10 +664,14 @@ module hockey(
       
            s5:
             begin
-                
-                LEDX = 5'b10101;
                 LEDA = 0;
                 LEDB = 0;
+                if (timer < (waittime/2)) begin
+                LEDX = 5'b10101;
+                end 
+                else begin
+                LEDX = 5'b01010;
+                end
             end
       
             default:
@@ -807,110 +688,55 @@ module hockey(
 //FOR SSDs
         always @ (*)
         begin
-            if (Y_COORD == 0) begin
-                SSD5 = DIGIT_0;
-            end
-            else if (Y_COORD == 1)
-            begin
-                SSD5 = DIGIT_1;
-            end
-            else if (Y_COORD == 2)
-            begin
-                SSD5 = DIGIT_2;
-            end
-            else if (Y_COORD == 3)
-            begin
-                SSD5 = DIGIT_3;
-            end
-            else if (Y_COORD == 4)
-            begin
-                SSD5 = DIGIT_4;
-            end
-            else begin
-                SSD5 = 7'b0000000;
-            end
 
-            if (YA == 0) begin
-                SSD6 = DIGIT_0;
-            end
-            else if (YA == 1)
-            begin
-                SSD6 = DIGIT_1;
-            end
-            else if (YA == 2)
-            begin
-                SSD6 = DIGIT_2;
-            end
-            else if (YA == 3)
-            begin
-                SSD6 = DIGIT_3;
-            end
-            else if (YA == 4)
-            begin
-                SSD6 = DIGIT_4;
-            end
+            SSD7 = 7'b1111111;
+            SSD6 = 7'b1111111;
+            SSD5 = 7'b1111111;
+            SSD4 = 7'b1111111;
+            SSD3 = 7'b1111111;
+            SSD2 = 7'b1111111;
+            SSD1 = 7'b1111111;
+            SSD0 = 7'b1111111;
 
-            if (YB == 0) begin
-                SSD7 = DIGIT_0;
-            end
-            else if (YB == 1)
-            begin
-                SSD7 = DIGIT_1;
-            end
-            else if (YB == 2)
-            begin
-                SSD7 = DIGIT_2;
-            end
-            else if (YB == 3)
-            begin
-                SSD7 = DIGIT_3;
-            end
-            else if (YB == 4)
-            begin
-                SSD7 = DIGIT_4;
-            end
-            else begin
-                SSD7 = 7'b0000000;
-            end
-
-            if (DIRA == 0) begin
-                SSD4 = DIGIT_0;
-            end
-            else if (DIRA == 1)
-            begin
-                SSD4 = DIGIT_1;
-            end
-            else if (DIRA == 2)
-            begin
-                SSD4 = DIGIT_2;
-            end
-            
-            if (DIRB == 0) begin
-                SSD3 = DIGIT_0;
-            end
-            else if (DIRB == 1)
-            begin
-                SSD3 = DIGIT_1;
-            end
-            else if (DIRB == 2)
-            begin
-                SSD3 = DIGIT_2;
-            end
             case (cstate)
             s0:
             begin
-
+                SSD7 = 7'b1111111;
+                SSD6 = 7'b1111111;
+                SSD5 = 7'b1111111;
                 SSD4 = 7'b1111111;
                 SSD3 = 7'b1111111;
-                SSD2 = 7'b1111111;
-                SSD1 = 7'b1111111;
-                SSD0 = 7'b1111111;
+                SSD2 = PRINT_A;
+                SSD1 = DIGIT_line;
+                SSD0 = PRINT_B;
             end
             
             s1: 
             begin
+                if (YA == 0) begin
+                    SSD4 = DIGIT_0;
+                end
+                else if (YA == 1)
+                begin
+                    SSD4 = DIGIT_1;
+                end
+                else if (YA == 2)
+                begin
+                    SSD4 = DIGIT_2;
+                end
+                else if (YA == 3)
+                begin
+                    SSD4 = DIGIT_3;
+                end
+                else if (YA == 4)
+                begin
+                    SSD4 = DIGIT_4;
+                end
+                else begin
+                    SSD4 = 7'b0000000;
+                end
 
-                SSD4 = 7'b1111111;
+                SSD5 = 7'b1111111;
                 SSD3 = 7'b1111111;
                 SSD2 = 7'b1111111;
                 SSD1 = 7'b1111111;
@@ -919,8 +745,30 @@ module hockey(
 
             s2:
             begin
+                if (YB == 0) begin
+                    SSD4 = DIGIT_0;
+                end
+                else if (YB == 1)
+                begin
+                    SSD4 = DIGIT_1;
+                end
+                else if (YB == 2)
+                begin
+                    SSD4 = DIGIT_2;
+                end
+                else if (YB == 3)
+                begin
+                    SSD4 = DIGIT_3;
+                end
+                else if (YB == 4)
+                begin
+                    SSD4 = DIGIT_4;
+                end
+                else begin
+                    SSD4 = 7'b0000000;
+                end
 
-                SSD4 = 7'b1111111;
+                SSD5 = 7'b1111111;
                 SSD3 = 7'b1111111;
                 SSD2 = 7'b1111111;
                 SSD1 = 7'b1111111;
@@ -929,7 +777,30 @@ module hockey(
             
             s3:
             begin
-                SSD4 = 7'b1111111;
+                if (Y_COORD == 0) begin
+                    SSD4 = DIGIT_0;
+                end
+                else if (Y_COORD == 1)
+                begin
+                    SSD4 = DIGIT_1;
+                end
+                else if (Y_COORD == 2)
+                begin
+                    SSD4 = DIGIT_2;
+                end
+                else if (Y_COORD == 3)
+                begin
+                    SSD4 = DIGIT_3;
+                end
+                else if (Y_COORD == 4)
+                begin
+                    SSD4 = DIGIT_4;
+                end
+                else begin
+                    SSD4 = 7'b0000000;
+                end
+
+                SSD5 = 7'b1111111;
                 SSD3 = 7'b1111111;
                 SSD2 = 7'b1111111;
                 SSD1 = 7'b1111111;
@@ -938,8 +809,30 @@ module hockey(
 
             s4:
             begin
+                if (Y_COORD == 0) begin
+                    SSD4 = DIGIT_0;
+                end
+                else if (Y_COORD == 1)
+                begin
+                    SSD4 = DIGIT_1;
+                end
+                else if (Y_COORD == 2)
+                begin
+                    SSD4 = DIGIT_2;
+                end
+                else if (Y_COORD == 3)
+                begin
+                    SSD4 = DIGIT_3;
+                end
+                else if (Y_COORD == 4)
+                begin
+                    SSD4 = DIGIT_4;
+                end
+                else begin
+                    SSD4 = 7'b0000000;
+                end
 
-                SSD4 = 7'b1111111;
+                SSD5 = 7'b1111111;
                 SSD3 = 7'b1111111;
                 SSD2 = 7'b1111111;
                 SSD1 = 7'b1111111;
@@ -948,38 +841,46 @@ module hockey(
 
             s5:
             begin
-                SSD3 = 7'b0000001;
-                SSD2 = 7'b0000001;
-                SSD1 = 7'b0000001; 
+                SSD3 = 7'b1111111;
+                SSD5 = 7'b1111111;
+                SSD6 = 7'b1111111;
+                SSD7 = 7'b1111111;
+                SSD1 = DIGIT_line; 
                 
                 if( score_A == 0 && score_B == 3)begin
-                    SSD4 = DIGIT_0;
+                    SSD4 = PRINT_B;
+                    SSD2 = DIGIT_0;
                     SSD0 = DIGIT_3;    
                 end
                 else if( score_A == 1 && score_B == 3)begin
-                    SSD4 = DIGIT_1;
+                    SSD4 = PRINT_B;
+                    SSD2 = DIGIT_1;
                     SSD0 = DIGIT_3;                    
                 end
                 else if( score_A == 2 && score_B == 3)begin
-                    SSD4 = DIGIT_2;
+                    SSD4 = PRINT_B;
+                    SSD2 = DIGIT_2;
                     SSD0 = DIGIT_3;                    
                 end
 
                 else if( score_A == 3 && score_B == 0)begin
-                    SSD4 = DIGIT_3;
+                    SSD4 = PRINT_A;
+                    SSD2 = DIGIT_3;
                     SSD0 = DIGIT_0;                    
                 end
                 else if( score_A == 3 && score_B == 1)begin
-                    SSD4 = DIGIT_3;
+                    SSD4 = PRINT_A;
+                    SSD2 = DIGIT_3;
                     SSD0 = DIGIT_1;                    
                 end
                 else if( score_A == 3 && score_B == 2)begin
-                    SSD4 = DIGIT_3;
+                    SSD4 = PRINT_A;
+                    SSD2 = DIGIT_3;
                     SSD0 = DIGIT_2;    
                     end
 
                 else begin
-                    SSD4 = 7'b0000000;
+                    SSD2 = 7'b0000000;
                     SSD0 = 7'b0000000;    
                 end
             end
@@ -987,21 +888,44 @@ module hockey(
 
             s6:
             begin
-            SSD7 = 7'b0000001;
-            SSD6 = 7'b0000001;
-            SSD3 = 7'b0000001;
-            SSD2 = 7'b0000001;
-            SSD1 = 7'b0000001; 
+            SSD7 = 7'b1111111;
+            SSD6 = 7'b1111111;
+            SSD5 = 7'b1111111;
+            SSD3 = 7'b1111111;
+            SSD4 = 7'b1111111;
             
-            SSD4 = DIGIT_0;
+            SSD2 = DIGIT_0;
+            SSD1 = DIGIT_line;
             SSD0 = DIGIT_0;    
             end
 
             s7:
             begin
-                SSD7 = 7'b1111111;
-                SSD6 = 7'b1111111;
-                SSD4 = 7'b1111111;
+                if (Y_COORD == 0) begin
+                    SSD4 = DIGIT_0;
+                end
+                else if (Y_COORD == 1)
+                begin
+                    SSD4 = DIGIT_1;
+                end
+                else if (Y_COORD == 2)
+                begin
+                    SSD4 = DIGIT_2;
+                end
+                else if (Y_COORD == 3)
+                begin
+                    SSD4 = DIGIT_3;
+                end
+                else if (Y_COORD == 4)
+                begin
+                    SSD4 = DIGIT_4;
+                end
+                else begin
+                    SSD4 = 7'b0000000;
+                end
+    
+
+                SSD5 = 7'b1111111;
                 SSD3 = 7'b1111111;
                 SSD2 = 7'b1111111;
                 SSD1 = 7'b1111111;
@@ -1010,9 +934,31 @@ module hockey(
 
             s8:
             begin
-                SSD7 = 7'b1111111;
-                SSD6 = 7'b1111111;
-                SSD4 = 7'b1111111;
+                if (Y_COORD == 0) begin
+                    SSD4 = DIGIT_0;
+                end
+                else if (Y_COORD == 1)
+                begin
+                    SSD4 = DIGIT_1;
+                end
+                else if (Y_COORD == 2)
+                begin
+                    SSD4 = DIGIT_2;
+                end
+                else if (Y_COORD == 3)
+                begin
+                    SSD4 = DIGIT_3;
+                end
+                else if (Y_COORD == 4)
+                begin
+                    SSD4 = DIGIT_4;
+                end
+                else begin
+                    SSD4 = 7'b0000000;
+                end
+    
+
+                SSD5 = 7'b1111111;
                 SSD3 = 7'b1111111;
                 SSD2 = 7'b1111111;
                 SSD1 = 7'b1111111;
@@ -1022,10 +968,11 @@ module hockey(
 
             s9:
             begin
-                SSD7 = 7'b0000001;
-                SSD6 = 7'b0000001;
-                SSD3 = 7'b0000001;
-                SSD4 = 7'b0000001;
+                SSD7 = 7'b1111111;
+                SSD6 = 7'b1111111;
+                SSD5 = 7'b1111111;
+                SSD3 = 7'b1111111;
+                SSD4 = 7'b1111111;
                 SSD1 = DIGIT_line; 
             case ({score_A, score_B}) 
                 4'b0000: begin
@@ -1094,9 +1041,9 @@ module hockey(
             
             s10:
             begin
-                SSD7 = 7'b0000001;
-                SSD6 = 7'b0000001;
-                SSD3 = 7'b0000001;
+                SSD7 = 7'b1111111;
+                SSD6 = 7'b1111111;
+                SSD3 = 7'b1111111;
                 SSD2 = 7'b0000001;
                 SSD1 = DIGIT_line; 
             case ({score_A, score_B}) 
@@ -1162,6 +1109,18 @@ module hockey(
             end
                 
             endcase
+            end
+
+            default:
+            begin
+                SSD7 = 7'b1111111;
+                SSD6 = 7'b1111111;
+                SSD5 = 7'b1111111;
+                SSD4 = 7'b1111111;
+                SSD3 = 7'b1111111;
+                SSD2 = 7'b1111111;
+                SSD1 = 7'b1111111;
+                SSD0 = 7'b1111111;
             end
             endcase
         end
