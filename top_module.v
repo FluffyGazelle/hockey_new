@@ -41,15 +41,15 @@ module top_module(
     output [7:0]an
 );
 
-    reg [6:0] SSD7;
-    reg [6:0] SSD6;
-    reg [6:0] SSD5;
-    reg [6:0] SSD4;
-    reg [6:0] SSD3;
-    reg [6:0] SSD2;
-    reg [6:0] SSD1;
-    reg [6:0] SSD0;
-    wire clk_div;
+    wire [6:0] SSD7;
+    wire [6:0] SSD6;
+    wire [6:0] SSD5;
+    wire [6:0] SSD4;
+    wire [6:0] SSD3;
+    wire [6:0] SSD2;
+    wire [6:0] SSD1;
+    wire [6:0] SSD0;
+    wire clk_div, btn_B, btn_A;
 
     clk_divider run0(
         .clk_in(clk),
@@ -61,21 +61,21 @@ module top_module(
         .clk(clk_div),
         .rst(rst),
         .noisy_in(BTNA),
-        .clean_out(BTNA)
+        .clean_out(btn_A)
     );
 
     debouncer denoised_b(
         .clk(clk_div),
         .rst(rst),
         .noisy_in(BTNB),
-        .clean_out(BTNB)
+        .clean_out(btn_B)
     );
 
     hockey hockeyrun(
         .clk(clk_div),
         .rst(rst),
-        .BTNA(BTNA),
-        .BTNB(BTNB),
+        .BTNA(btn_A),
+        .BTNB(btn_B),
         .DIRA(DIRA),
         .DIRB(DIRB),
         .YA(YA),
