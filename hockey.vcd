@@ -1,5 +1,5 @@
 $date
-	Sun Jan 07 12:47:57 2024
+	Sun Jan 07 15:21:29 2024
 $end
 $version
 	Icarus Verilog
@@ -29,92 +29,72 @@ $var wire 3 / YA [2:0] $end
 $var wire 3 0 YB [2:0] $end
 $var wire 1 + clk $end
 $var wire 1 , rst $end
-$var parameter 7 1 DIGIT_0 $end
-$var parameter 7 2 DIGIT_1 $end
-$var parameter 7 3 DIGIT_2 $end
-$var parameter 7 4 DIGIT_3 $end
-$var parameter 5 5 LD_0 $end
-$var parameter 5 6 LD_1 $end
-$var parameter 5 7 LD_2 $end
-$var parameter 5 8 LD_3 $end
-$var parameter 5 9 LD_4 $end
-$var parameter 5 : LD_ALL $end
-$var parameter 5 ; LD_NONE $end
-$var parameter 8 < s0 $end
-$var parameter 8 = s1 $end
-$var parameter 8 > s10 $end
-$var parameter 8 ? s2 $end
-$var parameter 8 @ s3 $end
-$var parameter 8 A s4 $end
-$var parameter 8 B s5 $end
-$var parameter 8 C s6 $end
-$var parameter 8 D s7 $end
-$var parameter 8 E s8 $end
-$var parameter 8 F s9 $end
-$var reg 3 G X_COORD [2:0] $end
-$var reg 3 H Y_COORD [2:0] $end
-$var reg 1 I btn_A $end
-$var reg 1 J btn_B $end
-$var reg 2 K correct_guess_A [1:0] $end
-$var reg 2 L correct_guess_B [1:0] $end
-$var reg 4 M cstate [3:0] $end
-$var reg 3 N guess_y_A [2:0] $end
-$var reg 3 O guess_y_B [2:0] $end
-$var reg 4 P nstate [3:0] $end
-$var reg 2 Q score_A [1:0] $end
-$var reg 2 R score_B [1:0] $end
-$var reg 8 S timer [7:0] $end
-$var reg 2 T turn [1:0] $end
-$var reg 2 U win [1:0] $end
-$var reg 4 V y1 [3:0] $end
+$var parameter 8 1 s0 $end
+$var parameter 8 2 s1 $end
+$var parameter 8 3 s10 $end
+$var parameter 8 4 s2 $end
+$var parameter 8 5 s3 $end
+$var parameter 8 6 s4 $end
+$var parameter 8 7 s5 $end
+$var parameter 8 8 s6 $end
+$var parameter 8 9 s7 $end
+$var parameter 8 : s8 $end
+$var parameter 8 ; s9 $end
+$var reg 3 < X_COORD [2:0] $end
+$var reg 3 = Y_COORD [2:0] $end
+$var reg 1 > btn_A $end
+$var reg 1 ? btn_B $end
+$var reg 2 @ correct_guess_A [1:0] $end
+$var reg 2 A correct_guess_B [1:0] $end
+$var reg 4 B cstate [3:0] $end
+$var reg 3 C guess_y_A [2:0] $end
+$var reg 3 D guess_y_B [2:0] $end
+$var reg 4 E nstate [3:0] $end
+$var reg 2 F score_A [1:0] $end
+$var reg 2 G score_B [1:0] $end
+$var reg 8 H timer [7:0] $end
+$var reg 2 I turn [1:0] $end
+$var reg 8 J waittime [7:0] $end
+$var reg 2 K win [1:0] $end
+$var reg 4 L y1 [3:0] $end
 $upscope $end
 $upscope $end
 $enddefinitions $end
 $comment Show the parameter values. $end
 $dumpall
-b1001 F
-b1000 E
-b111 D
-b110 C
-b101 B
-b100 A
-b11 @
-b10 ?
-b1010 >
-b1 =
-b0 <
-b0 ;
-b11111 :
-b10000 9
-b1000 8
-b100 7
-b10 6
-b1 5
-b110 4
-b10010 3
-b1001111 2
-b1 1
+b1001 ;
+b1000 :
+b111 9
+b110 8
+b101 7
+b100 6
+b11 5
+b10 4
+b1010 3
+b1 2
+b0 1
 b101 $
 b1010 #
 $end
 #0
 $dumpvars
-bx V
-bx U
-b10 T
-bx S
-bx R
-bx Q
-bx P
-bx O
-bx N
-bx M
 bx L
 bx K
-xJ
-xI
+b10 J
+bx I
 bx H
 bx G
+bx F
+bx E
+bx D
+bx C
+bx B
+bx A
+bx @
+x?
+x>
+bx =
+bx <
 b0 0
 b0 /
 b0 .
@@ -133,20 +113,21 @@ $end
 #5
 1+
 #10
-b0 P
-b0 K
-b0 L
-b0 S
-b0 U
-0J
-0I
-b0 R
-b0 Q
-b0 !
+b0 E
+b10 I
+b0 @
+b0 A
 b0 H
-b0 "
+b0 K
+0?
+0>
 b0 G
-b0 M
+b0 F
+b0 !
+b0 =
+b0 "
+b0 <
+b0 B
 0+
 1,
 #15
@@ -172,14 +153,14 @@ b0 M
 0+
 1%
 #65
-b110 P
-b0 T
+b110 E
+b0 I
 1+
 #70
 0+
 0%
 #75
-b110 M
+b110 B
 1+
 #80
 0+
@@ -187,20 +168,20 @@ b10 )
 b10 /
 1%
 #85
-b1 S
+b1 H
 1+
 #90
 0+
 0%
 #95
-b1 P
-b10 S
+b1 E
+b10 H
 1+
 #100
 0+
 #105
-b11 S
-b1 M
+b11 H
+b1 B
 1+
 #110
 0+
@@ -208,7 +189,7 @@ b1 M
 b10 *
 b10 0
 #115
-b0 S
+b0 H
 1+
 #120
 0+
@@ -219,116 +200,115 @@ b0 S
 #135
 1+
 #140
-b11 P
+b11 E
 0+
 1%
 #145
-1I
-b0 V
+1>
+b0 L
 b10 !
-b10 H
-b11 M
+b10 =
+b11 B
 1+
 #150
 0+
 0%
 #155
-b1 S
+b1 H
 1+
 #160
 0+
 #165
-b10 S
+b10 H
 1+
 #170
 0+
 #175
-1J
-b10 O
+1?
+b10 D
 b1 "
-b1 G
-b0 S
+b1 <
+b0 H
 1+
 #180
 0+
 #185
-b1 S
+b1 H
 1+
 #190
 0+
 #195
-b10 S
+b10 H
 1+
 #200
 0+
 #205
 b10 "
-b10 G
-b0 S
+b10 <
+b0 H
 1+
 #210
 0+
 #215
-b1 S
+b1 H
 1+
 #220
 0+
 #225
-b10 S
+b10 H
 1+
 #230
 0+
 #235
 b11 "
-b11 G
-b0 S
+b11 <
+b0 H
 1+
 #240
 0+
 #245
-b1 S
+b1 H
 1+
 #250
 0+
 #255
-b10 S
+b10 H
 1+
 #260
 0+
 #265
-b111 P
+b111 E
 b100 "
-b100 G
-b0 S
+b100 <
+b0 H
 1+
 #270
 0+
 #275
-b1 S
-b111 M
+b1 H
+b111 B
 1+
 #280
 0+
 #285
-b100 P
+b100 E
+b10 H
 b11 "
-b11 G
-b1 L
-b10 S
+b11 <
+b1 A
 1+
 #290
 0+
 0&
 #295
-b0 S
-b1 Q
-b0 L
-b100 M
+b0 H
+b100 B
 1+
 #300
 0+
 #305
-b1 S
+b1 H
+b0 A
 1+
 #310
 0+
@@ -336,88 +316,93 @@ b1 S
 b11 *
 b11 0
 #315
-b10 S
+b10 H
 1+
 #320
 0+
 0&
 #325
-0I
-b10 N
+0>
+b10 C
 b10 "
-b10 G
-b0 S
+b10 <
+b0 H
 1+
 #330
 0+
 #335
-b1 S
+b1 H
 1+
 #340
 0+
 #345
-b10 S
+b10 H
 1+
 #350
 0+
 #355
 b1 "
-b1 G
-b0 S
+b1 <
+b0 H
 1+
 #360
 0+
 #365
-b1 S
+b1 H
 1+
 #370
 0+
 #375
-b10 S
+b10 H
 1+
 #380
 0+
 #385
-b1000 P
+b1000 E
 b0 "
-b0 G
-b0 S
+b0 <
+b0 H
 1+
 #390
 0+
 #395
-b1 S
-b1000 M
+b1 H
+b1000 B
 1+
 #400
 0+
 #405
-b1010 P
-b1 R
-b10 S
+b1010 E
+b10 H
 1+
 #410
 0+
 #415
-b0 S
-b10 R
-b1010 M
+b0 H
+b1 G
+b1010 B
 1+
 #420
 0+
 #425
+b1 H
 1+
 #430
 0+
 #435
+b1 E
+b10 H
 1+
 #440
 0+
 #445
+b11 H
+b1 B
 1+
 #450
 0+
 #455
+b0 H
 1+
 #460
 0+
